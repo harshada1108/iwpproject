@@ -1,13 +1,22 @@
 import React from "react";
-import { CiForkAndKnife } from "react-icons/ci";
+import { AiFillMedicineBox } from "react-icons/ai";
 
-const FilterProduct = ({category,onClick,isActive}) => {
+const FilterProduct = ({ category, onClick, isActive }) => {
   return (
-    <div onClick={onClick}>
-      <div className={`text-3xl p-5  rounded-full cursor-pointer ${isActive ? "bg-red-600 text-white" : "bg-yellow-500"}`}>
-        <CiForkAndKnife />
+    <div 
+      onClick={onClick} 
+      className="transform transition-transform duration-300 hover:scale-105"
+    >
+      <div
+        className={`text-3xl p-5 rounded-full cursor-pointer shadow-md hover:shadow-lg ${
+          isActive ? "bg-[#28A699] text-white" : "bg-yellow-200 text-gray-800"
+        }`}
+      >
+        <AiFillMedicineBox />
       </div>
-      <p className="text-center font-medium my-1 capitalize">{category}</p>
+      <p className="text-center font-medium my-2 capitalize text-sm">
+        {category}
+      </p>
     </div>
   );
 };

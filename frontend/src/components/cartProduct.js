@@ -5,7 +5,12 @@ import { useDispatch } from "react-redux";
 import { deleteCartItem,increaseQty,decreaseQty } from "../redux/productSlide";
 
 const CartProduct = ({ id, name, image, category, qty, total, price }) => {
+
     const dispatch = useDispatch()
+    const handleIncreaseQty = () => {
+      console.log("Dispatching increaseQty with productId:", id); // Print productId
+      dispatch(increaseQty(id));
+    };
 
   return (
     <div className="bg-slate-200 p-2 flex gap-4 rounded border border-slate-300">
@@ -28,7 +33,7 @@ const CartProduct = ({ id, name, image, category, qty, total, price }) => {
         </p>
         <div className="flex justify-between ">
           <div className="flex gap-3 items-center">
-            <button onClick={()=>dispatch(increaseQty(id))} className="bg-slate-300 py-1 mt-2 rounded hover:bg-slate-400 p-1 ">
+            <button onClick={handleIncreaseQty} className="bg-slate-300 py-1 mt-2 rounded hover:bg-slate-400 p-1 ">
               <TbPlus />
             </button>
             <p className="font-semibold p-1">{qty}</p>

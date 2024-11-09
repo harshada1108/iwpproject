@@ -12,6 +12,7 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    //state is nothing but the payload  //some action that sould be perfomred  on the state
     loginRedux: (state, action) => {
       console.log(action.payload.data);
       //   state.user = action.payload.data;
@@ -27,6 +28,7 @@ export const userSlice = createSlice({
       state.lastName = "";
       state.email = "";
       state.image = "";
+      
     },
   },
 });

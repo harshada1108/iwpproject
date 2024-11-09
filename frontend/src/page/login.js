@@ -7,6 +7,7 @@ import {toast} from "react-hot-toast"
 import { useNavigate } from "react-router-dom";
  import { useDispatch, useSelector } from "react-redux";
  import { loginRedux } from "../redux/userSlice";
+ import { setCartItems } from "../redux/productSlide";
 
 
 const Login = () => {
@@ -14,10 +15,12 @@ const Login = () => {
   const [data, setData] = useState({
     email: "",
     password: "",
+    //set the cartitems 
   });
   const navigate = useNavigate()  
-  const userData = useSelector(state => state)
-
+  const userData = useSelector(state => state.user)
+  // const CartItems = useSelector(state => state.product)
+  
 
   const dispatch = useDispatch()
 
@@ -38,37 +41,49 @@ const Login = () => {
     })
   }
 
-  const handleSubmit = async(e)=>{
-    e.preventDefault()
-    const {email,password} = data
-    if(email && password ){
-      const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMIN}/login`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { email, password } = data;
+    if (email && password) {
+        const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMIN}/login`, {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
 
-      const dataRes = await fetchData.json()
-      console.log(dataRes)
-      
-      toast(dataRes.message)
-      
-      if(dataRes.alert){
-        dispatch(loginRedux(dataRes))
-        setTimeout(() => {
-          navigate("/")
-        }, 1000);
-      }
+        const dataRes = await fetchData.json();
+        
+        toast(dataRes.message);
 
-     console.log(userData)
+        // Set cart items with quantity
+        if (dataRes.alert) {
+            const cart_items = dataRes.data.cartItems;
+            const itemsWithQuantity = cart_items.map(item => ({
+                ...item,
+                qty: item.quantity ? parseInt(item.quantity) : 1
+            }));
+
+            console.log("Cart items are:")
+            console.log(itemsWithQuantity)
+
+            // Dispatch items to Redux
+            dispatch(setCartItems(itemsWithQuantity));
+
+            dispatch(loginRedux(dataRes));
+            setTimeout(() => {
+                navigate("/");
+            }, 1000);
+
+            // Log the updated cart items within the if block
+            console.log("Updated cart items:", itemsWithQuantity);
+        }
+    } else {
+        alert("Please enter required fields");
     }
-    else{
-        alert("Please Enter required fields")
-    }
-  }
+};
+
 
   return (
     <div className="p-3 md:p-4">

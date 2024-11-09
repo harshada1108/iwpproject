@@ -54,7 +54,8 @@ console.log(process.env.REACT_APP_SERVER_DOMIN)
     const { firstName, email, password, confirmPassword } = data;
     if (firstName && email && password && confirmPassword) {
       if (password === confirmPassword) {
-    
+     
+        //this is actually send the data to backend , fetch the data from frontend and send it to backend 
           const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMIN}/signup`,{
             method : "POST",
             headers : {
@@ -63,6 +64,8 @@ console.log(process.env.REACT_APP_SERVER_DOMIN)
             body : JSON.stringify(data)
           })
 
+
+          //response in return to data sent 
           const dataRes = await fetchData.json()
     
 

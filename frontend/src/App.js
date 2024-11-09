@@ -15,6 +15,8 @@ function App() {
     (async()=>{
       const res = await fetch(`${process.env.REACT_APP_SERVER_DOMIN}/product`)
       const resData = await res.json()
+      console.log("Fetched Data:", resData);                // Logs the actual data
+      console.log("Data Type:", typeof resData); 
       dispatch(setDataProduct(resData))
     })()
   },[])
