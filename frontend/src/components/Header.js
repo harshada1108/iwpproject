@@ -23,7 +23,7 @@ const Header = () => {
     console.log(cartItems)
     // Create an array of items to send to the API
     const itemsToSend = cartItems.map(item => ({
-      productId: item.productId,
+      productId: item_id,
       quantity: item.qty
     }));
   
