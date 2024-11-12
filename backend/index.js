@@ -8,6 +8,7 @@ const dotenv = require("dotenv").config();
 app.use(cors({
   origin: process.env.REACT_APP_FRONTEND_URL || '*', // Adjust for Vercel deployment
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true // Enable credentials if cookies are used
 }));
 
