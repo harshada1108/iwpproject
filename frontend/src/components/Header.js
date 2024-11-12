@@ -19,7 +19,8 @@ const Header = () => {
   const handleLogout = async () => {
     const userId = userData._id; // Assuming userData contains the user ID
     const cartItems = cartData.cartItem; // Get the cart items from Redux state
-   // console.log(cartItems)
+    console.log("These arw the cartItems")
+    console.log(cartItems)
     // Create an array of items to send to the API
     const itemsToSend = cartItems.map(item => ({
       productId: item.productId,
