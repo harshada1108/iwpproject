@@ -4,22 +4,22 @@ const mongoose = require("mongoose");
 const Stripe = require("stripe");
 const app = express({ limit: "100mb" });
 const dotenv = require("dotenv").config();
-console.log("ok till here");
+
 app.use(cors({ origin: `${process.env.REACT_APP_FRONTEND_URL}` }));
-console.log("ok till here");
+
 app.use(express.json());
 const PORT = process.env.PORT || 8080;
 
 app.get("/", (req, res) => {
   res.send("Server is running");
 });
-console.log("ok till here");
+
 // MongoDB connection 
 mongoose.connect(`${process.env.MONGODB_URL}`)
   .then(() => console.log("Connected to database"))
   .catch((err) => console.log(err));
 
-  console.log("ok till here"); 
+ 
 // User schema with cartItems
 const userSchema = mongoose.Schema({
   firstName: String,
