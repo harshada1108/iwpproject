@@ -5,19 +5,25 @@ const Stripe = require("stripe");
 const app = express({ limit: "100mb" });
 const dotenv = require("dotenv").config();
 
-app.use(cors({ origin: `${process.env.REACT_APP_FRONTEND_URL}` }));
+app.use(cors({
+  origin: process.env.REACT_APP_FRONTEND_URL || '*', // Adjust for Vercel deployment
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true // Enable credentials if cookies are used
+}));
 
-app.use(express.json());
 const PORT = process.env.PORT || 8080;
 
+// Basic route for testing
 app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
-// MongoDB connection 
-mongoose.connect(`${process.env.MONGODB_URL}`)
-  .then(() => console.log("Connected to database"))
-  .catch((err) => console.log(err));
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => console.log("Connected to database"))
+  .catch(err => console.error("Database connection error:", err));
 
  
 // User schema with cartItems

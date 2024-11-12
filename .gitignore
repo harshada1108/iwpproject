@@ -1,0 +1,58 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.pid.lock
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Build output
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Vercel deployment files
+.vercel
+
+# Other system files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Debugger configurations
+*.swp
+*.swo
+*.bak
+
+# Coverage reports
+coverage/
+
+# Miscellaneous
+*.tgz
+*.lock-wscript
+
+# OS generated files
+*.log
+*.lock
+*.log.*
