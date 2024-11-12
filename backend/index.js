@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const Stripe = require("stripe");
 const app = express({ limit: "100mb" });
 const dotenv = require("dotenv").config();
-
+app.use(express.json())
 app.use(cors({
   origin: process.env.REACT_APP_FRONTEND_URL || '*', // Adjust for Vercel deployment
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -71,7 +71,7 @@ app.post("/signup", async (req, res) => {
 });
 
 // User login
-app.post("/login", async (req, res) => {
+app.get("/login", async (req, res) => {
   const { email } = req.body;
   try {
     const result = await userModel.findOne({ email: email }).populate('cartItems.productId');
