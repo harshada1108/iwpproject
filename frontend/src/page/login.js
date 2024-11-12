@@ -52,6 +52,7 @@ const Login = () => {
             },
             body: JSON.stringify(data),
             mode: "cors",
+            credentials: 'include', // Make sure cookies are sent with the request
         });
 
         const dataRes = await fetchData.json();

@@ -55,6 +55,7 @@ const Newproduct = () => {
           },
           body: payload,
           mode: "cors",
+         
         });
   
         if (!fetchData.ok) {
