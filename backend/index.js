@@ -71,7 +71,7 @@ app.post("/signup", async (req, res) => {
 });
 
 // User login
-app.get("/login", async (req, res) => {
+app.post("/login", async (req, res) => {
   const { email } = req.body;
   try {
     const result = await userModel.findOne({ email: email }).populate('cartItems.productId');
