@@ -22,12 +22,13 @@ const Header = () => {
    // console.log(cartItems)
     // Create an array of items to send to the API
     const itemsToSend = cartItems.map(item => ({
-      productId: item.productId,
+      productId: item._id,
       quantity: item.qty
     }));
   
     console.log("items to send")
     console.log(itemsToSend);
+    console.log(userId);
     try {
       // Send the add-to-cart request to the server
       const response = await fetch(`${process.env.REACT_APP_SERVER_DOMIN}/add-to-cart`, {
