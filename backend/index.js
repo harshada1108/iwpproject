@@ -4,19 +4,22 @@ const mongoose = require("mongoose");
 const Stripe = require("stripe");
 const app = express({ limit: "100mb" });
 const dotenv = require("dotenv").config();
-app.use(cors({ origin: "http://localhost:3000" }));
+console.log("ok till here");
+app.use(cors({ origin: `${process.env.REACT_APP_FRONTEND_URL}` }));
+console.log("ok till here");
 app.use(express.json());
 const PORT = process.env.PORT || 8080;
 
 app.get("/", (req, res) => {
   res.send("Server is running");
 });
-
+console.log("ok till here");
 // MongoDB connection 
-mongoose.connect("mongodb+srv://harshapolshetty333:mUON1L0wWTxyqJx7@medcluster.k4ton.mongodb.net/")
+mongoose.connect(`${process.env.MONGODB_URL}`)
   .then(() => console.log("Connected to database"))
   .catch((err) => console.log(err));
 
+  console.log("ok till here"); 
 // User schema with cartItems
 const userSchema = mongoose.Schema({
   firstName: String,
@@ -122,7 +125,7 @@ const productModel = mongoose.model("product", schemaProduct);
 
 // Save product in data
 app.post("/uploadProduct", async (req, res) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Origin', `${process.env.REACT_APP_FRONTEND_URL}`);
   console.log(req.body);
   const data = await productModel(req.body);
   await data.save();
@@ -207,7 +210,7 @@ app.get("/cart/:userId", async (req, res) => {
 });
 
 // Payment gateway setup
-const stripe = new Stripe("sk_test_51NiwGvSGKkkdOcLhWuwmyRRTjbdnMvAtgIS36OyB9zaP7Rh6sUnUbkVXTEVUaTaoY8sT1JARc3Sk7fmcl1oSr0gN00lomGvMaq");
+const stripe = new Stripe(`${process.env.REACT_APP_STRIPE_SECRET_KEY}`);
 
 app.post("/create-checkout-session", async (req, res) => {
   try {
