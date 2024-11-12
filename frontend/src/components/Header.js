@@ -22,7 +22,7 @@ const Header = () => {
    // console.log(cartItems)
     // Create an array of items to send to the API
     const itemsToSend = cartItems.map(item => ({
-      productId: item._id,
+      productId: item.productId,
       quantity: item.qty
     }));
   
@@ -36,16 +36,17 @@ const Header = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-       
-        body: JSON.stringify({ userId, items: itemsToSend }), // Send userId and items
+        body: JSON.stringify({ userId, items: itemsToSend }),
         mode: "cors",
-         credentials: 'include', // Make sure cookies are sent with the request
+        credentials: 'include',
       });
       
       if (!response.ok) {
+        const errorResponse = await response.json();
+        console.error('Error details:', errorResponse);
         throw new Error('Failed to add items to cart during logout');
       }
-   
+      
       const data = await response.json();
       console.log(data.message); // Optionally log the response message
    
