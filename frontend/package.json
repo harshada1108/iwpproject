@@ -47,5 +47,7 @@
   },
   "devDependencies": {
     "tailwindcss": "^3.4.14"
-  }
+  },
+  "proxy": "https://iwpproject-2sic.vercel.app/"
+  
 }
