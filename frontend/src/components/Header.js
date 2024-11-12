@@ -37,6 +37,8 @@ const Header = () => {
         },
        
         body: JSON.stringify({ userId, items: itemsToSend }), // Send userId and items
+        mode: "cors",
+         credentials: 'include', // Make sure cookies are sent with the request
       });
       
       if (!response.ok) {

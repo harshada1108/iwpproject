@@ -162,8 +162,7 @@ const cartItemModel = mongoose.model("cartItem", schemaCartProduct);
 // Add multiple items to user's cart
 app.post("/add-to-cart", async (req, res) => {
   const { userId, items } = req.body;  // Expecting `items` to be an array of objects with `productId` and `quantity`
-   console.log("items is in index.js:")
-   console.log(items)
+  
   try {
     const user = await userModel.findById(userId);
     if (!user) {
