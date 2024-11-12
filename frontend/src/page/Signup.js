@@ -61,7 +61,8 @@ console.log(process.env.REACT_APP_SERVER_DOMIN)
             headers : {
               "content-type" : "application/json"
             },
-            body : JSON.stringify(data)
+            body : JSON.stringify(data),
+            mode: "cors",
           })
 
 

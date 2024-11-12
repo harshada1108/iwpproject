@@ -46,11 +46,12 @@ const Login = () => {
     const { email, password } = data;
     if (email && password) {
         const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMIN}/login`, {
-            method: "POST",
+            method: 'POST',
             headers: {
                 "content-type": "application/json",
             },
             body: JSON.stringify(data),
+            mode: "cors",
         });
 
         const dataRes = await fetchData.json();
