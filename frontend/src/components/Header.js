@@ -104,7 +104,14 @@ const Header = () => {
                   </Link>
                 )}
                 {/* )} */}
-
+                {userData.email === process.env.REACT_APP_ADMIN_EMAIL && (
+                  <Link
+                    to={"admindashboard"}
+                    className="whitespace-nowrap cursor-pointer px-2"
+                  >
+                    Dash Board
+                  </Link>
+                )}
                 {userData.firstName ? (
                   <p
                     className="cursor-pointer text-white px-2 bg-red-500"

@@ -24,49 +24,84 @@ const Cart = () => {
   
   const handlePayment = async () => {
     if (user.email) {
-      // Ensure the user has name and address information
-      const stripePromise = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+      try {
+
+        const orderItems = productCartItem.map(item => ({
+          productId: item.productId,
+          quantity: item.qty,
+        }));
   
-      // Create the payload to include the product items with quantity
-      const lineItems = productCartItem.map(item => ({
-        productId: item.productId, // or item._id depending on your data structure
-        quantity: item.qty, // Ensure to use the correct property for quantity
-        name: item.name, // Optional: Include name for reference
-        price: item.price, // Optional: Include price for reference
-        image: item.image, // Optional: Include image for reference
-      }));
+        // Create order payload
+        const orderPayload = {
+          userId: user._id, // Assuming `user._id` holds the user's ID
+          items: orderItems,
+        };
   
-      const payload = {
-        items: lineItems,
-        customer: {
-          name: user.name,
-          email: user.email,
-        },
-      };
+        // Call the create-order API
+        const orderResponse = await fetch(`${process.env.REACT_APP_SERVER_DOMIN}/create-order`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderPayload),
+        });
   
-      const res = await fetch(`${process.env.REACT_APP_SERVER_DOMIN}/create-checkout-session`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+        if (orderResponse.status !== 201) {
+          console.error("Error creating order:", orderResponse.status);
+          toast.error("Failed to create order. Please try again.");
+          return;
+        }
   
-      if (res.status !== 200) {
-        console.error("Error creating checkout session:", res.status);
-        return;
-      }
+        const orderData = await orderResponse.json();
+        console.log("Order created successfully:", orderData);
   
-      const data = await res.json();
-      console.log(data);
+        const stripePromise = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
   
-      toast("Redirecting to payment gateway...");
-      const stripe = await stripePromise;
-      const result = await stripe.redirectToCheckout({ sessionId: data.id });
+        const lineItems = productCartItem.map(item => ({
+          productId: item.productId,
+          quantity: item.qty,
+          name: item.name,
+          price: item.price,
+          image: item.image,
+        }));
   
-      if (result.error) {
-        console.error("Stripe Checkout error:", result.error);
-        toast.error(result.error.message);
+        const payload = {
+          items: lineItems,
+          customer: {
+            name: user.name,
+            email: user.email,
+          },
+        };
+  
+        const res = await fetch(`${process.env.REACT_APP_SERVER_DOMIN}/create-checkout-session`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+  
+        if (res.status !== 200) {
+          console.error("Error creating checkout session:", res.status);
+          return;
+        }
+  
+        const data = await res.json();
+        toast("Redirecting to payment gateway...");
+  
+        const stripe = await stripePromise;
+        const result = await stripe.redirectToCheckout({ sessionId: data.id });
+  
+        if (result.error) {
+          console.error("Stripe Checkout error:", result.error);
+          toast.error(result.error.message);
+        } else {
+          // Log cart items after successful redirection
+          console.log("Cart items after successful payment:", productCartItem);
+        }
+      } catch (error) {
+        console.error("Payment error:", error);
+        toast.error("An error occurred during payment.");
       }
     } else {
       toast("You have not logged in!");
@@ -75,7 +110,6 @@ const Cart = () => {
       }, 1000);
     }
   };
-  
   
   return (
     <>

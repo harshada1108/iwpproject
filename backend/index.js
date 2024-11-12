@@ -247,5 +247,119 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 });
 
+
+//order items 
+// Order schema and model
+const orderSchema = mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,
+  },
+  items: [
+    {
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'product',
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      }
+    }
+  ],
+  orderDate: {
+    type: Date,
+    default: Date.now,
+  },
+  status: {
+    type: String,
+    default: 'Pending',
+    enum: ['Pending', 'Shipped', 'Delivered', 'Cancelled'],
+  }
+});
+
+const orderModel = mongoose.model('order', orderSchema);
+
+// Create a new order
+app.post("/create-order", async (req, res) => {
+  const { userId } = req.body; // items should be an array of { productId, quantity }
+
+  try {
+    // Check if user exists
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    // Create a new order
+    const newOrder = new orderModel({ userId});
+    await newOrder.save();
+
+    res.status(201).send({ message: "Order created successfully", order: newOrder });
+  } catch (error) {
+    console.error("Error creating order:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
+// Get all orders or orders by a specific user
+app.get("/orders/:userId?", async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    let orders;
+    if (userId) {
+      // Get orders for a specific user
+      orders = await orderModel.find({ userId }).populate('userId', 'firstName lastName email').populate('items.productId', 'name image price');
+    } else {
+      // Get all orders
+      orders = await orderModel.find().populate('userId', 'firstName lastName email').populate('items.productId', 'name image price');
+    }
+
+    if (orders.length > 0) {
+      res.status(200).json(orders);
+    } else {
+      res.status(404).send({ message: "No orders found" });
+    }
+  } catch (error) {
+    console.error("Error retrieving orders:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
+app.get("/admin/orders", async (req, res) => {
+  try {
+    const orders = await orderModel
+      .find()
+      .populate({
+        path: 'userId',            // Populate user details (user schema)
+        select: 'firstName lastName email image' // Specify the fields you want from the user schema
+      })
+      .populate({
+        path: 'items.productId',   // Populate product details (product schema)
+        select: 'name image price description category' // Specify the fields you want from the product schema
+      });
+
+    // Map over the orders to include quantity in the response
+    if (orders.length > 0) {
+      const enrichedOrders = orders.map(order => {
+        order.items = order.items.map(item => ({
+          productId: item.productId,
+          quantity: item.quantity
+        }));
+        return order;
+      });
+      res.status(200).json(enrichedOrders);
+    } else {
+      res.status(404).send({ message: "No orders found" });
+    }
+  } catch (error) {
+    console.error("Error retrieving orders for admin:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
 // Server is running
 app.listen(PORT, () => console.log("Server is running at port: " + PORT));

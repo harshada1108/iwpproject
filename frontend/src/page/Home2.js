@@ -47,14 +47,18 @@ const Home2 = () => {
         <div className="md:flex gap-4 py-2">
           {/* Left Section */}
           <div className="md:w-1/2">
-            <div className="flex gap-3 bg-slate-300 w-36 px-2 items-center rounded-full">
-              <p className="text-sm font-medium text-slate-900">Bike Delivery</p>
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/2972/2972185.png"
-                className="h-7"
-                alt="Bike Delivery"
-              />
-            </div>
+          <div
+  className="flex gap-3 bg-slate-300 w-36 px-2 items-center rounded-full cursor-pointer"
+  onClick={() => window.location.href = "https://www.google.com/maps?q=VNIT+Nagpur"}
+>
+  <p className="text-sm font-medium text-slate-900">Bike Delivery</p>
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/2972/2972185.png"
+    className="h-7"
+    alt="Bike Delivery"
+  />
+</div>
+
             <h2 className="text-4xl md:text-6xl font-bold py-2">
               The Best Online MedFacility{" "}
               <span className=" text-[#28A699] text-6xl">in Amravati</span>

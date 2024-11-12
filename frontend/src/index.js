@@ -23,6 +23,7 @@ import Success from "./page/Success";
 import Cancel from "./page/Cancel";
 import AddressInput from "./components/AddressInput";
 import Home2 from "./page/Home2";
+import AdminDashboard from "./page/AdminDashboard";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,6 +41,7 @@ const router = createBrowserRouter(
       <Route path="cancel" element={<Cancel/>}/>
       <Route path="/address" element={<AddressInput />} />
       <Route path="/home2" element={<Home2 />} />
+      <Route path = "admindashboard" element={<AdminDashboard />} />
 
     </Route>
   )
