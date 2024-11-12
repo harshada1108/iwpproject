@@ -23,7 +23,7 @@ import Success from "./page/Success";
 import Cancel from "./page/Cancel";
 import AddressInput from "./components/AddressInput";
 import Home2 from "./page/Home2";
-import AdminDashboard from "./page/AdminDashboard";
+import AdminDashboard from "./page/AdminDashboard.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
